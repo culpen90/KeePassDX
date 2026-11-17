@@ -58,6 +58,7 @@ import com.kunzisoft.keepass.credentialprovider.SpecialMode
 import com.kunzisoft.keepass.credentialprovider.TypeMode
 import com.kunzisoft.keepass.database.ContextualDatabase
 import com.kunzisoft.keepass.database.MainCredential
+import com.kunzisoft.keepass.education.FeatureOverviewDialogFragment
 import com.kunzisoft.keepass.education.FileDatabaseSelectActivityEducation
 import com.kunzisoft.keepass.hardware.HardwareKey
 import com.kunzisoft.keepass.model.RegisterInfo
@@ -177,6 +178,20 @@ class FileDatabaseSelectActivity : DatabaseModeActivity() {
             databaseFilesViewModel.updateDatabaseFile(fileDatabaseHistoryWithNewAlias)
         }
         fileDatabaseHistoryRecyclerView.adapter = mAdapterDatabaseHistory
+
+        val overviewTag = FeatureOverviewDialogFragment.TAG
+        supportFragmentManager.setFragmentResultListener(overviewTag, this) { _, _ ->
+            mFileDatabaseSelectActivityEducation.completeFeatureOverview()
+            performedNextEducation()
+        }
+        if (savedInstanceState == null
+            && intent.action == Intent.ACTION_MAIN && intent.hasCategory(Intent.CATEGORY_LAUNCHER)
+            && mSpecialMode == SpecialMode.DEFAULT
+            && PreferencesUtil.getDefaultDatabasePath(this).isNullOrEmpty()
+            && mFileDatabaseSelectActivityEducation.shouldShowFeatureOverview()
+            && !ContextualDatabase.getInstance().loaded) {
+            FeatureOverviewDialogFragment().show(supportFragmentManager, overviewTag)
+        }
 
         // Load default database the first time
         databaseFilesViewModel.doForDefaultDatabase { databaseFileUri ->
@@ -410,7 +425,9 @@ class FileDatabaseSelectActivity : DatabaseModeActivity() {
         }
 
         Handler(Looper.getMainLooper()).post {
-            performedNextEducation()
+            if (supportFragmentManager.findFragmentByTag(FeatureOverviewDialogFragment.TAG) == null) {
+                performedNextEducation()
+            }
         }
 
         return true

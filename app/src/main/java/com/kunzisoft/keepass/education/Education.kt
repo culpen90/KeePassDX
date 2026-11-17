@@ -88,7 +88,7 @@ open class Education(val activity: Activity) {
      * @param context The context to retrieve the key string in XML
      * @param educationKeys Keys to save as boolean 'true'
      */
-    private fun saveEducationPreference(context: Context, vararg educationKeys: Int) {
+    protected fun saveEducationPreference(context: Context, vararg educationKeys: Int) {
         val sharedPreferences = getEducationSharedPreferences(context)
         val editor = sharedPreferences.edit()
         for (key in educationKeys) {
@@ -123,6 +123,7 @@ open class Education(val activity: Activity) {
          * All preference keys associated with education
          */
         val educationResourcesKeys = intArrayOf(
+                R.string.education_feature_overview_key,
                 R.string.education_create_db_key,
                 R.string.education_select_db_key,
                 R.string.education_unlock_key,
@@ -145,6 +146,7 @@ open class Education(val activity: Activity) {
                                                 name: String,
                                                 value: String) {
             when (name) {
+                context.getString(R.string.education_feature_overview_key) -> editor.putBoolean(name, value.toBoolean())
                 context.getString(R.string.education_create_db_key) -> editor.putBoolean(name, value.toBoolean())
                 context.getString(R.string.education_select_db_key) -> editor.putBoolean(name, value.toBoolean())
                 context.getString(R.string.education_unlock_key) -> editor.putBoolean(name, value.toBoolean())

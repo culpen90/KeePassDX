@@ -26,9 +26,27 @@ import androidx.core.content.ContextCompat
 import com.getkeepsafe.taptargetview.TapTarget
 import com.getkeepsafe.taptargetview.TapTargetView
 import com.kunzisoft.keepass.R
+import com.kunzisoft.keepass.utils.getPackageInfoCompat
 
 class FileDatabaseSelectActivityEducation(activity: Activity)
     : Education(activity) {
+
+    fun shouldShowFeatureOverview(): Boolean {
+        if (!isEducationScreensEnabled(activity)) return false
+
+        val prefs = getEducationSharedPreferences(activity)
+        val key = activity.getString(R.string.education_feature_overview_key)
+        if (prefs.contains(key)) return !prefs.getBoolean(key, false)
+
+        // Skip upgrades unless hints were reset. A new profile may have installed the
+        // app after the package was last updated for another user.
+        val info = activity.packageManager.getPackageInfoCompat(activity.packageName)
+        return info.firstInstallTime >= info.lastUpdateTime
+    }
+
+    fun completeFeatureOverview() {
+        saveEducationPreference(activity, R.string.education_feature_overview_key)
+    }
 
     /**
      * Check and display learning views

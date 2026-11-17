@@ -632,6 +632,9 @@
     <string name="reset_education_screens_title">Reset educational hints</string>
     <string name="reset_education_screens_summary">Show all educational info again</string>
     <string name="reset_education_screens_text">Educational hints reset</string>
+    <string name="feature_overview_title">Welcome to KeePassDX</string>
+    <string name="feature_overview_message"><b>Your encrypted vault</b>\nCreate a vault to store your logins, or open a file from another KeePass app.\n\n<b>Strong passwords</b>\nGenerate a unique password for each account and save it with your username.\n\n<b>Form filling</b>\nEnter saved logins with Magikeyboard, or enable Autofill on Android 8 and later.</string>
+    <string name="feature_overview_get_started">Get started</string>
     <string name="education_create_database_title">Create your database file</string>
     <string name="education_create_database_summary">Create your first password management file.</string>
     <string name="education_select_database_title">Open an existing database</string>
